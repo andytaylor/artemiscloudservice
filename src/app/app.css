@@ -1,3 +1,65 @@
 html, body, #root {
   height: 100%;
 }
+.pf-c-button {
+  --pf-c-button--m-primary--BackgroundColor: #80dfff;
+  --pf-c-button--m-primary--Color: black;
+}
+/*
+.pf-c-page {
+  background-color: white !important;
+}
+
+.pf-c-page__header {
+  --pf-global--BackgroundColor--100: white;
+  --pf-c-page__header--BackgroundColor: white
+}
+
+.pf-c-page__sidebar {
+  --pf-c-page__sidebar--BackgroundColor: #80dfff;
+  --pf-global--BackgroundColor--light-100: red;
+  --pf-global--BackgroundColor--light-200: red;
+  --pf-global--BackgroundColor--light-300: red;
+}
+
+.pf-c-nav__item {
+  --pf-global--BackgroundColor--light-100: red;
+  --pf-global--BackgroundColor--light-200: red;
+  --pf-global--BackgroundColor--light-300: red;
+  --pf-global--link--Color: #06c;
+  --pf-global--link--Color--hover: #004080;
+  --pf-global--link--Color--light: #2b9af3;
+  --pf-global--link--Color--light--hover: #73bcf7;
+  --pf-global--link--Color--dark: #06c;
+  --pf-global--link--Color--dark--hover: #004080;
+}
+
+m-current, .pf-c-nav__link.pf-m-current:hover {
+    --pf-c-nav__link--m-current--Color: #00022b;
+    --pf-c-nav__link--m-current--BackgroundColor: #e6f9ff;
+}
+
+.pf-c-nav__link.pf-m-current:active {
+    --pf-c-nav__link--m-current--Color: #00022b;
+    --pf-c-nav__link--m-current--BackgroundColor: #e6f9ff;
+}
+
+.pf-c-nav__link {
+  --pf-c-nav__link--Color: #00022b;
+}
+
+
+.pf-c-nav {
+  --pf-global--BackgroundColor--light-100: red;
+  --pf-global--BackgroundColor--light-200: red;
+  --pf-global--BackgroundColor--light-300: red;
+  --pf-global--link--Color: #06c;
+  --pf-global--link--Color--hover: #004080;
+  --pf-global--link--Color--light: #2b9af3;
+  --pf-global--link--Color--light--hover: #73bcf7;
+  --pf-global--link--Color--dark: #06c;
+  --pf-global--link--Color--dark--hover: #004080;
+}
+
+.pf-c-card {
+}*/

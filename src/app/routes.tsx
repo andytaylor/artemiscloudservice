@@ -1,13 +1,17 @@
 import * as React from 'react';
 import { Route, RouteComponentProps, Switch } from 'react-router-dom';
 import { accessibleRouteChangeHandler } from '@app/utils/utils';
-import { Dashboard } from '@app/Dashboard/Dashboard';
+import { Brokers } from '@app/Brokers/Brokers';
+import { Broker } from '@app/Brokers/Broker';
+import { BrokerPage } from '@app/modules/broker/BrokerPage';
 import { Support } from '@app/Support/Support';
 import { GeneralSettings } from '@app/Settings/General/GeneralSettings';
 import { ProfileSettings } from '@app/Settings/Profile/ProfileSettings';
 import { NotFound } from '@app/NotFound/NotFound';
 import { useDocumentTitle } from '@app/utils/useDocumentTitle';
 import { LastLocationProvider, useLastLocation } from 'react-router-last-location';
+
+/* const getBrokers = () => import("@app/modules/broker/BrokerPage"); */
 
 let routeFocusTimer: number;
 export interface IAppRoute {
@@ -31,39 +35,12 @@ export type AppRouteConfig = IAppRoute | IAppRouteGroup;
 
 const routes: AppRouteConfig[] = [
   {
-    component: Dashboard,
-    exact: true,
-    label: 'Dashboard',
-    path: '/',
-    title: 'PatternFly Seed | Main Dashboard',
-  },
-  {
-    component: Support,
-    exact: true,
-    isAsync: true,
-    label: 'Support',
-    path: '/support',
-    title: 'PatternFly Seed | Support Page',
-  },
-  {
-    label: 'Settings',
-    routes: [
-      {
-        component: GeneralSettings,
-        exact: true,
-        label: 'General',
-        path: '/settings/general',
-        title: 'PatternFly Seed | General Settings',
-      },
-      {
-        component: ProfileSettings,
-        exact: true,
-        label: 'Profile',
-        path: '/settings/profile',
-        title: 'PatternFly Seed | Profile Settings',
-      },
-    ],
-  },
+      component: BrokerPage,
+      exact: true,
+      label: 'Brokers',
+      path: '/',
+      title: 'Brokers',
+  }
 ];
 
 // a custom hook for sending focus to the primary content container
@@ -115,6 +92,9 @@ const AppRoutes = (): React.ReactElement => (
           isAsync={isAsync}
         />
       ))}
+      <Route path="/broker">
+        <Broker />
+      </Route>
       <PageNotFound title="404 Page Not Found" />
     </Switch>
   </LastLocationProvider>
