@@ -1,21 +1,28 @@
 import React, { useState } from "react";
 import { Nav, NavItem, NavList, PageGroup, PageNavigation, Title } from '@patternfly/react-core';
-import { BrokerOverviewComponent, BrokerConfigurationComponent } from "@app/modules/broker/components/BrokerDetail";
+import { BrokerOverviewComponent, BrokerConfigurationComponent, BrokerClientComponent } from "@app/modules/broker/components/BrokerDetail";
 
 
 export const BrokerDetailContainer: React.FunctionComponent = ({brokerName}) => {
 
   const [ showOverview, setShowOverview ] = useState(true);
   const [ showConfiguration, setShowConfiguration ] = useState(false);
+  const [ showClients, setShowClients ] = useState(false);
 
   console.log(brokerName)
   const onSelect = ( result ) => {
     if (result.itemId == 1) {
       setShowOverview(true);
       setShowConfiguration(false);
+      setShowClients(false);
     } else if (result.itemId == 2) {
       setShowOverview(false);
       setShowConfiguration(true);
+      setShowClients(false);
+    } else if (result.itemId == 3) {
+      setShowOverview(false);
+      setShowConfiguration(false);
+      setShowClients(true);
     }
   }
 
@@ -35,6 +42,7 @@ export const BrokerDetailContainer: React.FunctionComponent = ({brokerName}) => 
         </PageNavigation>
         { showOverview && ( <BrokerOverviewComponent /> )}
         { showConfiguration && ( <BrokerConfigurationComponent brokerName={brokerName}/> )}
+        { showClients && ( <BrokerClientComponent /> )}
     </PageGroup>
   );
 };

@@ -5,3 +5,4 @@
 
 export * from "./BrokerOverviewComponent";
 export * from "./BrokerConfigurationComponent"
+export * from "./BrokerClientComponent"
