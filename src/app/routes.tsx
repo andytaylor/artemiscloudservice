@@ -2,8 +2,7 @@ import * as React from 'react';
 import { Route, RouteComponentProps, Switch } from 'react-router-dom';
 import { accessibleRouteChangeHandler } from '@app/utils/utils';
 import { Brokers } from '@app/Brokers/Brokers';
-import { Broker } from '@app/Brokers/Broker';
-import { BrokerPage } from '@app/modules/broker/BrokerPage';
+import { BrokerPage, BrokerDetailPage } from '@app/modules/broker';
 import { Support } from '@app/Support/Support';
 import { GeneralSettings } from '@app/Settings/General/GeneralSettings';
 import { ProfileSettings } from '@app/Settings/Profile/ProfileSettings';
@@ -93,7 +92,7 @@ const AppRoutes = (): React.ReactElement => (
         />
       ))}
       <Route path="/broker">
-        <Broker />
+        <BrokerDetailPage />
       </Route>
       <PageNotFound title="404 Page Not Found" />
     </Switch>

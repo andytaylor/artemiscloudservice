@@ -4,3 +4,4 @@
  */
 
 export * from "./BrokerList";
+export * from "./BrokerDetail";
