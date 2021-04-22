@@ -4,3 +4,4 @@
  */
 
 export * from "./BrokerOverviewComponent";
+export * from "./BrokerConfigurationComponent"

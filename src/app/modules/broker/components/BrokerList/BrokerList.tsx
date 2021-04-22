@@ -6,6 +6,7 @@
 import * as React from 'react';
 import { useState } from 'react';
 import { Link } from "react-router-dom";
+import { useParams, useLocation } from "react-router";
 import { PageSection, Title, List, ListItem} from '@patternfly/react-core';
 import { Table, TableHeader, TableBody } from '@patternfly/react-table';
 import { BrokerWizard } from "@app/modules/broker/wizards";
@@ -19,8 +20,9 @@ export interface IBroker {
 }
 
 export const BrokerList: React.FunctionComponent = ({}) =>  {
-  console.log(allBrokers());
 
+  const location = useLocation()
+  console.log(location);
   const data = allBrokers();
 
 
@@ -30,7 +32,7 @@ export const BrokerList: React.FunctionComponent = ({}) =>  {
       selected: row.selected,
       cells: [
         {
-          title: <Link to={`broker/${row.name}`}>{row.name}</Link>
+          title: <Link to={{ pathname: "broker", state: [{name: row.name}]}}>{row.name}</Link>
         },
         row.status,
         row.size,
