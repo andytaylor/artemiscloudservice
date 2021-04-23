@@ -7,7 +7,7 @@ import * as React from 'react';
 import { useState } from 'react';
 import { Link } from "react-router-dom";
 import { useParams, useLocation } from "react-router";
-import { PageSection, Title, List, ListItem} from '@patternfly/react-core';
+import { PageSection, Title, List, ListItem, Grid, GridItem, Button} from '@patternfly/react-core';
 import { Table, TableHeader, TableBody } from '@patternfly/react-table';
 import { BrokerWizard } from "@app/modules/broker/wizards";
 import { allBrokers, addBroker } from "@app/data-module";
@@ -21,9 +21,18 @@ export interface IBroker {
 
 export const BrokerList: React.FunctionComponent = ({}) =>  {
 
+  const [ isModalOpen, setIsModalOpen ] = useState(false);
   const location = useLocation()
-  console.log(location);
+  console.log(isModalOpen);
   const data = allBrokers();
+
+  const closeWizard = () => {
+    setIsModalOpen(false);
+  };
+
+  const openWizard = () => {
+    setIsModalOpen(true);
+  };
 
 
   const toTableCells = (row: IBrokerDef) => {
@@ -60,15 +69,19 @@ export const BrokerList: React.FunctionComponent = ({}) =>  {
   }
   return (
     <PageSection>
-      <BrokerWizard
-        onCreateBroker={onBrokersChange} />
-        <PageSection>
-      <Title headingLevel="h1" size="lg">Brokers</Title>
+      <BrokerWizard onCreateBroker={onBrokersChange} isEnabled={isModalOpen} onToggle={closeWizard} />
+      <Grid>
+        <GridItem span={8}>
+          <Title headingLevel="h1" size="lg">Brokers</Title>
+        </GridItem>
+        <GridItem span={4}>
+          <Button variant="primary" onClick={openWizard}>Create Broker</Button>
+        </GridItem>
+      </Grid>
       <Table aria-label="brokers List" rows={tableRows} cells={columns}>
         <TableHeader />
         <TableBody />
       </Table>
-      </PageSection>
     </PageSection>
   );
 }

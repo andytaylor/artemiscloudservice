@@ -5,15 +5,15 @@ import { Link } from "react-router-dom";
 import { PageSection, Modal, ModalVariant, Button, Form, FormGroup, TextInput, Wizard, Checkbox } from '@patternfly/react-core';
 import { Table, TableHeader, TableBody } from '@patternfly/react-table';
 
-export const BrokerWizard: React.FunctionComponent = ({ onCreateBroker }) =>  {
+export const BrokerWizard: React.FunctionComponent = ({ onCreateBroker, isEnabled, onToggle }) =>  {
 
   const title = 'Create Broker';
   const [ brokerName, setBrokerName ] = useState("");
   const [ brokerSize, setBrokerSize ] = useState(1);
-  const [ isModalOpen, setIsModalOpen ] = useState(false);
   const [ isBrokerNameValid, setIsBrokerNameValid ] = useState(false);
   const [ stepIdReached , setStepIdReached ] = useState(1);
 
+  console.log("modal is " + isEnabled);
 
   const handleBrokerNameChange = value => {
       setBrokerName(value);
@@ -73,11 +73,6 @@ export const BrokerWizard: React.FunctionComponent = ({ onCreateBroker }) =>  {
   ];
 
 
-  const handleModalToggle = () => {
-    console.log(isModalOpen);
-    setIsModalOpen(!isModalOpen);
-  };
-
 
   const onNext = ({ id }) => {
     console.log(id);
@@ -90,7 +85,7 @@ export const BrokerWizard: React.FunctionComponent = ({ onCreateBroker }) =>  {
   };
 
   const onClose = () => {
-    handleModalToggle();
+    onToggle();
     setBrokerName("");
     setBrokerSize(1);
   };
@@ -103,26 +98,26 @@ export const BrokerWizard: React.FunctionComponent = ({ onCreateBroker }) =>  {
   const createBroker = () => {
     console.log("Creating Broker")
     onCreateBroker(brokerName, "Active", brokerSize, "Just now");
-    setIsModalOpen(false);
     setBrokerName("");
     setBrokerSize(1);
+    onToggle();
   }
 
+
   return (
-      <PageSection>
-        <Button variant="primary" onClick={handleModalToggle}>Create Broker</Button>
-        { isModalOpen &&
+      <>
+        { isEnabled &&
         (<Wizard
           title={title}
           description="Create and Deploy a new broker instance"
           steps={steps}
           onNext = {onNext}
           onBack = {onBack}
-          onClose = {onClose}
+          onClose = {onToggle}
           onGoToStep = {onGoToStep}
           onSave = {createBroker}
-          isOpen={isModalOpen}
+          isOpen={isEnabled}
           startAtStep = {1} />)}
-      </PageSection>
+      </>
   );
 }

@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Nav, NavItem, NavList, PageGroup, PageNavigation, Title } from '@patternfly/react-core';
+import { Nav, NavItem, NavList, PageGroup, PageNavigation, Title, Button, Grid, GridItem } from '@patternfly/react-core';
 import { BrokerOverviewComponent, BrokerConfigurationComponent, BrokerClientComponent, BrokerQueuesComponent, BrokerTopicsComponent } from "@app/modules/broker/components/BrokerDetail";
 
 
@@ -22,7 +22,15 @@ export const BrokerDetailContainer: React.FunctionComponent = ({brokerName}) => 
   return (
     <PageGroup>
        <PageNavigation>
-          <Title headingLevel="h1" size="lg">Broker {brokerName}</Title>
+       <Grid>
+         <GridItem span={8}>
+            <Title headingLevel="h1" size="lg">Broker {brokerName}</Title>
+         </GridItem>
+         <GridItem span={4}>
+          <Button variant="primary">Console</Button>{' '}
+          <Button variant="primary">Delete</Button>
+         </GridItem>
+       </Grid>
           <Nav onSelect={onSelect} variant="tertiary">
             <NavList>
               <NavItem itemId={1} href="#" isActive={showOverview}>Overview</NavItem>
