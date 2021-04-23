@@ -16,7 +16,8 @@ export const BrokerTopicsComponent: React.FunctionComponent = () => {
       <PageSection variant={PageSectionVariants.light}>
         <Title headingLevel="h1" size="lg">Clients</Title>
          <Table aria-label="Topics table" cells={columns} rows={rows} borders="false" variant="compact">
-            <TableBody />
+          <TableHeader />
+          <TableBody />
          </Table>
       </PageSection>
     );

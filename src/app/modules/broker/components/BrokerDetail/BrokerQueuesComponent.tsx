@@ -15,7 +15,8 @@ export const BrokerQueuesComponent: React.FunctionComponent = () => {
       <PageSection variant={PageSectionVariants.light}>
         <Title headingLevel="h1" size="lg">Clients</Title>
          <Table aria-label="Queues table" cells={columns} rows={rows} borders="false" variant="compact">
-            <TableBody />
+          <TableHeader />
+          <TableBody />
          </Table>
       </PageSection>
     );
