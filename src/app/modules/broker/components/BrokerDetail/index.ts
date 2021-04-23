@@ -6,3 +6,5 @@
 export * from "./BrokerOverviewComponent";
 export * from "./BrokerConfigurationComponent"
 export * from "./BrokerClientComponent"
+export * from "./BrokerQueuesComponent"
+export * from "./BrokerTopicsComponent"

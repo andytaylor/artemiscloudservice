@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Nav, NavItem, NavList, PageGroup, PageNavigation, Title } from '@patternfly/react-core';
-import { BrokerOverviewComponent, BrokerConfigurationComponent, BrokerClientComponent } from "@app/modules/broker/components/BrokerDetail";
+import { BrokerOverviewComponent, BrokerConfigurationComponent, BrokerClientComponent, BrokerQueuesComponent, BrokerTopicsComponent } from "@app/modules/broker/components/BrokerDetail";
 
 
 export const BrokerDetailContainer: React.FunctionComponent = ({brokerName}) => {
@@ -8,22 +8,15 @@ export const BrokerDetailContainer: React.FunctionComponent = ({brokerName}) => 
   const [ showOverview, setShowOverview ] = useState(true);
   const [ showConfiguration, setShowConfiguration ] = useState(false);
   const [ showClients, setShowClients ] = useState(false);
+  const [ showQueues, setShowQueues ] = useState(false);
+  const [ showTopics, setShowTopics ] = useState(false);
 
-  console.log(brokerName)
   const onSelect = ( result ) => {
-    if (result.itemId == 1) {
-      setShowOverview(true);
-      setShowConfiguration(false);
-      setShowClients(false);
-    } else if (result.itemId == 2) {
-      setShowOverview(false);
-      setShowConfiguration(true);
-      setShowClients(false);
-    } else if (result.itemId == 3) {
-      setShowOverview(false);
-      setShowConfiguration(false);
-      setShowClients(true);
-    }
+    setShowOverview(result.itemId == 1);
+    setShowConfiguration(result.itemId == 2);
+    setShowClients(result.itemId == 3);
+    setShowQueues(result.itemId == 4);
+    setShowTopics(result.itemId == 5);
   }
 
   return (
@@ -43,6 +36,8 @@ export const BrokerDetailContainer: React.FunctionComponent = ({brokerName}) => 
         { showOverview && ( <BrokerOverviewComponent /> )}
         { showConfiguration && ( <BrokerConfigurationComponent brokerName={brokerName}/> )}
         { showClients && ( <BrokerClientComponent /> )}
+        { showQueues && ( <BrokerQueuesComponent /> )}
+        { showTopics && ( <BrokerTopicsComponent /> )}
     </PageGroup>
   );
 };
