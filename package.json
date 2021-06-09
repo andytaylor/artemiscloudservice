@@ -84,9 +84,12 @@
     "@patternfly/react-icons": "^4.7.22",
     "@patternfly/react-styles": "^4.7.22",
     "@patternfly/react-table": "^4.23.2",
+    "axios": "^0.21.1",
+    "date-fns": "^2.22.1",
     "react": "^17.0.1",
     "react-dom": "^17.0.1",
     "react-router-last-location": "^2.0.1",
-    "sirv-cli": "^1.0.10"
+    "sirv-cli": "^1.0.10",
+    "use-patternfly": "^0.2.0"
   }
 }

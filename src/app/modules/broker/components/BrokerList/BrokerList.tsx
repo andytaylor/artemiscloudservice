@@ -4,27 +4,26 @@
  */
 
 import * as React from 'react';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Link } from "react-router-dom";
 import { useParams, useLocation } from "react-router";
 import { PageSection, Title, List, ListItem, Grid, GridItem, Button} from '@patternfly/react-core';
 import { Table, TableHeader, TableBody } from '@patternfly/react-table';
+import { Loading } from "use-patternfly";
 import { BrokerWizard } from "@app/modules/broker/wizards";
-import { allBrokers, addBroker } from "@app/data-module";
-
-export interface IBroker {
-  name: string;
-  status: string;
-  size: string;
-  created: string;
-}
+import { allBrokers, addBroker, getDeployments } from "@app/modules/kubeapi";
 
 export const BrokerList: React.FunctionComponent = ({}) =>  {
 
+  const [ isLoading, setIsLoading ] = useState(true);
+
+  useEffect(() => {
+      getDeployments(onSuccess);
+    }, [isLoading]);
+
   const [ isModalOpen, setIsModalOpen ] = useState(false);
-  const location = useLocation()
-  console.log(isModalOpen);
-  const data = allBrokers();
+
+  const location = useLocation();
 
   const closeWizard = () => {
     setIsModalOpen(false);
@@ -35,8 +34,8 @@ export const BrokerList: React.FunctionComponent = ({}) =>  {
   };
 
 
-  const toTableCells = (row: IBrokerDef) => {
-    console.log(row);
+  const toTableCells = (row: IDeployments) => {
+    console.log("****" + row);
     const tableRow: IRowData = {
       selected: row.selected,
       cells: [
@@ -45,14 +44,14 @@ export const BrokerList: React.FunctionComponent = ({}) =>  {
         },
         row.status,
         row.size,
-        row.created
+        row.timestamp
       ],
       originalData: row
     };
     return tableRow;
   }
 
-  const [tableRows, setTableRows] = useState(data.map(toTableCells));
+  const [tableRows, setTableRows] = useState([]);
 
   console.log(tableRows);
 
@@ -63,10 +62,19 @@ export const BrokerList: React.FunctionComponent = ({}) =>  {
     'Created'
   ];
 
+  const onSuccess = (deployments) => {
+    console.log("updating brokerddd");
+    setIsLoading(false);
+    setTableRows(deployments.map(toTableCells));
+  }
+
   const onBrokersChange = (name: string, status: string, size: number, created: string) => {
     console.log("adding brokerddd");
     setTableRows(addBroker(name, status, size, created).map(toTableCells));
   }
+
+  if (isLoading) return <Loading />;
+
   return (
     <PageSection>
       <BrokerWizard onCreateBroker={onBrokersChange} isEnabled={isModalOpen} onToggle={closeWizard} />

@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { PageSection, PageSectionVariants, Title, List, ListItem, OrderType, ListComponent,Card, CardTitle, CardBody, CardFooter, Gallery, GalleryItem  } from '@patternfly/react-core';
 import { Chart, ChartBar, ChartVoronoiContainer, ChartAxis, ChartGroup } from '@patternfly/react-charts';
-import { getBrokerCPU, getBrokerMemory, getBrokerStorage } from "@app/data-module";
+import { getBrokerCPU, getBrokerMemory, getBrokerStorage } from "@app/modules/kubeapi";
 
 export const BrokerOverviewComponent: React.FunctionComponent = ({}) => {
 

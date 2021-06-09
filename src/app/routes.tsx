@@ -4,8 +4,7 @@ import { accessibleRouteChangeHandler } from '@app/utils/utils';
 import { Brokers } from '@app/Brokers/Brokers';
 import { BrokerPage, BrokerDetailPage } from '@app/modules/broker';
 import { Support } from '@app/Support/Support';
-import { GeneralSettings } from '@app/Settings/General/GeneralSettings';
-import { ProfileSettings } from '@app/Settings/Profile/ProfileSettings';
+import { ProfileSettings } from '@app/modules/settings';
 import { NotFound } from '@app/NotFound/NotFound';
 import { useDocumentTitle } from '@app/utils/useDocumentTitle';
 import { LastLocationProvider, useLastLocation } from 'react-router-last-location';
@@ -38,8 +37,16 @@ const routes: AppRouteConfig[] = [
       exact: true,
       label: 'Brokers',
       path: '/',
-      title: 'Brokers',
-  }
+      title: 'ArtemisCloud as a service',
+  },
+   {
+     component: ProfileSettings,
+     exact: true,
+     isAsync: true,
+     label: 'Settings',
+     path: '/settings',
+     title: 'ArtemisCloud Settings',
+   }
 ];
 
 // a custom hook for sending focus to the primary content container

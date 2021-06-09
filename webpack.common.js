@@ -139,6 +139,23 @@ module.exports = env => {
           configFile: path.resolve(__dirname, './tsconfig.json')
         })
       ],
+      fallback: {
+        "fs": false,
+        "tls": false,
+        "net": false,
+        "path": false,
+        "zlib": false,
+        "http": false,
+        "http2": false,
+        "https": false,
+        "stream": false,
+        "crypto": false,
+        "os": false,
+        "vm": false,
+        "timers": false,
+        "child_process": false,
+        "dns": false
+      },
       symlinks: false,
       cacheWithContext: false
     }
