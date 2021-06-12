@@ -7,21 +7,22 @@ import * as React from 'react';
 import { useState, useEffect } from 'react';
 import { Link } from "react-router-dom";
 import { useParams, useLocation } from "react-router";
-import { PageSection, Title, List, ListItem, Grid, GridItem, Button} from '@patternfly/react-core';
+import { PageSection, Title, List, ListItem, Grid, GridItem, Button, Alert} from '@patternfly/react-core';
 import { Table, TableHeader, TableBody } from '@patternfly/react-table';
 import { Loading } from "use-patternfly";
 import { BrokerWizard } from "@app/modules/broker/wizards";
-import { allBrokers, addBroker, getDeployments } from "@app/modules/kubeapi";
+import { getDeployments } from "@app/modules/kubeapi";
 
 export const BrokerList: React.FunctionComponent = ({}) =>  {
 
   const [ isLoading, setIsLoading ] = useState(true);
 
   useEffect(() => {
-      getDeployments(onSuccess);
-    }, [isLoading]);
+    getDeployments(onSuccess, onError);
+  }, [isLoading]);
 
   const [ isModalOpen, setIsModalOpen ] = useState(false);
+  const [ error, setError ] = useState(null);
 
   const location = useLocation();
 
@@ -68,10 +69,16 @@ export const BrokerList: React.FunctionComponent = ({}) =>  {
     setTableRows(deployments.map(toTableCells));
   }
 
+  const onError = (message) => {
+    setError(message);
+  }
+
   const onBrokersChange = (name: string, status: string, size: number, created: string) => {
     console.log("adding brokerddd");
     setTableRows(addBroker(name, status, size, created).map(toTableCells));
   }
+
+  if (error) return <Alert variant="danger" title={error} />;
 
   if (isLoading) return <Loading />;
 

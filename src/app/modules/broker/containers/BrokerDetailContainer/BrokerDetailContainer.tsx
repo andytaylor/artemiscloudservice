@@ -1,6 +1,8 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Nav, NavItem, NavList, PageGroup, PageNavigation, Title, Button, Grid, GridItem } from '@patternfly/react-core';
 import { BrokerOverviewComponent, BrokerConfigurationComponent, BrokerClientComponent, BrokerQueuesComponent, BrokerTopicsComponent } from "@app/modules/broker/components/BrokerDetail";
+import { getDeployment } from "@app/modules/kubeapi";
+import { Loading } from "use-patternfly";
 
 
 export const BrokerDetailContainer: React.FunctionComponent = ({brokerName}) => {
@@ -10,6 +12,12 @@ export const BrokerDetailContainer: React.FunctionComponent = ({brokerName}) => 
   const [ showClients, setShowClients ] = useState(false);
   const [ showQueues, setShowQueues ] = useState(false);
   const [ showTopics, setShowTopics ] = useState(false);
+  const [ isLoading, setIsLoading ] = useState(true);
+  const [ deployment, setDeployment ] = useState({});
+
+  useEffect(() => {
+    getDeployment(brokerName, onSuccess);
+  }, [isLoading]);
 
   const onSelect = ( result ) => {
     setShowOverview(result.itemId == 1);
@@ -18,6 +26,14 @@ export const BrokerDetailContainer: React.FunctionComponent = ({brokerName}) => 
     setShowQueues(result.itemId == 4);
     setShowTopics(result.itemId == 5);
   }
+
+  const onSuccess = (deployment) => {
+    console.log("updating brokerddd");
+    setIsLoading(false);
+    setDeployment(deployment);
+  }
+
+  if (isLoading) return <Loading />;
 
   return (
     <PageGroup>
@@ -42,7 +58,7 @@ export const BrokerDetailContainer: React.FunctionComponent = ({brokerName}) => 
           </Nav>
         </PageNavigation>
         { showOverview && ( <BrokerOverviewComponent /> )}
-        { showConfiguration && ( <BrokerConfigurationComponent brokerName={brokerName}/> )}
+        { showConfiguration && ( <BrokerConfigurationComponent deployment={deployment}/> )}
         { showClients && ( <BrokerClientComponent /> )}
         { showQueues && ( <BrokerQueuesComponent /> )}
         { showTopics && ( <BrokerTopicsComponent /> )}

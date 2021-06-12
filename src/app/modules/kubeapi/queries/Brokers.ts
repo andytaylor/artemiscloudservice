@@ -14,39 +14,7 @@ const apiToken = sessionStorage.getItem(storedBearerTokenKey);
 const brokerApisPath = "apis/broker.amq.io/v2alpha4";
 const brokerActivemqartemises = cluster + "/" + brokerApisPath + "/namespaces/andyspace/activemqartemises";
 
-const headers = { 'Authorization': 'Bearer ' + apiToken };
-
-const fullApiPath = () => {
-  return cluster + apipath + "/";
-}
-
-const fullApisPath = () => {
-  return cluster + "/" + apispath + "/";
-}
-
-const brokerApisPath = () => {
-  return cluster + "/" + brokerApi + "/";
-}
-
-const brokerPath = (version) => {
-  return cluster + "/" + brokerApi + "/" + version + "namespaces";
-}
-
-const apiNamespacePath = () => {
-  return fullApiPath() + namespace + "/";
-}
-
-const apisNamespacePath = () => {
-  return fullApisPath() + namespace + "/";
-}
-
-const brokerpodsKindsPath = (version) => {
-  return apisNamespacePath() + brokerKinds;
-}
-
-const brokerpodsListPath = () => {
-  return apiNamespacePath() + "pods?labelSelector=" + brokerLabelSelector;
-}
+const headers = { 'Authorization': 'Bearer ' + apiToken }
 
 
 export interface IDeployment {
@@ -55,6 +23,9 @@ export interface IDeployment {
   timestamp: string;
   size: number;
   status: string;
+  persistenceEnabled: boolean;
+  messageMigration: boolean;
+  image: string;
 }
 
 /* Dummy Data */
@@ -138,12 +109,38 @@ const brokerStorage: [] = [
   }
 ];
 
-const getDeployments = (onSuccess) => {
-  getBrokerApis(onSuccess);
+const getDeployment = (name, onSuccess) => {
+  const url = brokerActivemqartemises + "/" + name;
+  console.log("invoking " + url);
+  const deployment: IDeployment = {};
+  axios.get(
+    url , {
+      headers: headers,
+    })
+    .then(response => {
+       console.log(response.data);
+       const activeMQArtemis = response.data;
+       deployment = {
+        name: activeMQArtemis.metadata.name,
+        apiversion: activeMQArtemis.apiVersion,
+        timestamp: activeMQArtemis.metadata.creationTimestamp,
+        size: activeMQArtemis.spec.deploymentPlan.size,
+        status: "unknown",
+        persistenceEnabled: activeMQArtemis.spec.deploymentPlan.persistenceEnabled,
+        messageMigration: activeMQArtemis.spec.deploymentPlan.messageMigration,
+        image: activeMQArtemis.spec.deploymentPlan.image
+      };
+       onSuccess(deployment);
+    })
+    .catch(e => {
+       console.log(e);
+    });
+
+  return deployment;
 }
 
-const getBrokerApis = (onSuccess) => {
-  console.log(brokerActivemqartemises);
+const getDeployments = (onSuccess, onError) => {
+  console.log("invoking " + brokerActivemqartemises);
   const deployments: IDeployment[] = [];
   axios.get(
     brokerActivemqartemises , {
@@ -152,18 +149,14 @@ const getBrokerApis = (onSuccess) => {
     .then(response => {
        console.log(response.data);
        response.data.items.forEach((activeMQArtemis) => {
-         console.log(activeMQArtemis)
-         console.log(activeMQArtemis.apiVersion);
-         console.log(activeMQArtemis.metadata.name);
          deployments.push({name: activeMQArtemis.metadata.name, apiversion: activeMQArtemis.apiVersion, timestamp: activeMQArtemis.metadata.creationTimestamp, size: activeMQArtemis.spec.deploymentPlan.size, status: "unknown"});
        })
        onSuccess(deployments);
     })
     .catch(e => {
-       console.log(e);
+      console.log(e.name + ': ' + e.message);
+      onError(e.name + ': ' + e.message);
     });
-
-  console.log("££"+deployments);
 }
 
 const addBroker = (name: string, status: string, size: number, created: string) => {
@@ -189,4 +182,4 @@ const getBrokerStorage = (name: string) => {
   return brokerStorage;
 }
 
-export { addBroker, getBrokerCPU, getBrokerMemory, getBrokerStorage, getDeployments };
+export { addBroker, getBrokerCPU, getBrokerMemory, getBrokerStorage, getDeployments, getDeployment };
